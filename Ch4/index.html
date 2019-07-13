@@ -2,21 +2,27 @@
 <html ng-app="app">
     <head>
         <title>Parking</title>
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
         <link rel="stylesheet" type="text/css" href="css/app.css" />
         <script src="lib/angular.min.js"></script>
         <script src="lib/angular-sanitize.min.js"></script>
         <script src="lib/angular-animate.min.js"></script>
         <script src="app.js"></script>
+        <script src="services/parkingHttpFacade.js"></script>
         <script src="controllers/parking.js"></script>
         <script src="directives/alert.js"></script>
-        <script src="filters/plate.js"></script>
+        <script src="services/httpUnauthorizedInterceptor.js"></script>
+        <script src="config.js"></script>
     </head>
     <body ng-controller="parkingCtrl">
         <h3 ng-bind-html="appTitle"></h3>
         <div ng-show="cars.length > 0">
             <input type="text"
                 ng-model="criteria"
+                ng-keyup="searchCarsByCriteria(criteria)"
                 placeholder="What are you looking for?" />
+            {{searchResult}}
+            {{message}}
             <table>
                 <thead>
                     <tr>
@@ -28,12 +34,12 @@
                 </thead>
                 <tbody>
                     <!-- Iterating over a scoped variable -->
-                    <tr ng-repeat="car in cars | filter: criteria | orderBy:'plate':order"
+                    <tr ng-repeat="car in cars | orderBy:'plate':order"
                         ng-class="{selected: car.selected}">
                         <td><input type="checkbox" ng-model="car.selected" /></td>
-                        <td><span ng-bind="car.plate | plate"></span></td>
-                        <td><span ng-bind="car.color"></span></td>
-                        <td><span ng-bind="car.entrance | date:'MM/dd/yyyy hh:mm'"></span></td>
+                        <td><a href="#/car/{{car.id}}">{{car.plate}}</a></td>
+                        <td>{{car.color}}</td>
+                        <td>{{car.entrance | date:'MM/dd/yyyy hh:mm'}}</td>
                     </tr>
                 </tbody>
             </table>
