@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <title>Parking</title>
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <script src="lib/angular.min.js"></script>
+        <script src="lib/angular-sanitize.min.js"></script>
+        <script src="lib/angular-animate.min.js"></script>
+        <script src="app.js"></script>
+        <script src="controllers/parking.js"></script>
+        <script src="directives/alert.js"></script>
+        <script src="filters/plate.js"></script>
+    </head>
+    <body ng-controller="parkingCtrl">
+        <h3 ng-bind-html="appTitle"></h3>
+        <div ng-show="cars.length > 0">
+            <input type="text"
+                ng-model="criteria"
+                placeholder="What are you looking for?" />
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th ng-click="order = !order"><a href="">Plate</a></th>
+                        <th>Color</th>
+                        <th>Entrance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterating over a scoped variable -->
+                    <tr ng-repeat="car in cars | filter: criteria | orderBy:'plate':order"
+                        ng-class="{selected: car.selected}">
+                        <td><input type="checkbox" ng-model="car.selected" /></td>
+                        <td><span ng-bind="car.plate | plate"></span></td>
+                        <td><span ng-bind="car.color"></span></td>
+                        <td><span ng-bind="car.entrance | date:'MM/dd/yyyy hh:mm'"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-hide="cars.length > 0">
+            The parking lot is empty
+        </div>
+
+        <!-- For the form validation -->
+        <form name="plateForm">
+            <!-- Creating a new JavaScript object car and binding it to the scope. -->
+            <input type="text"
+                name="plateField"
+                ng-model="car.plate"
+                placeholder="3 digits must follow 3 chars"
+                ng-required="true"
+                ng-minlength="6"
+                ng-maxlength="10"
+                ng-pattern="/[A-Za-z]{3}\d{3,7}/" />
+        </form>
+
+        <select ng-model="car.color" ng-options="color for color in colors">
+        </select>
+
+        <!-- High coupling version of the "park()" controller action.
+            <button ng-click="park()">Park</button>
+            -->
+        <!-- Low coupling version of the "park()" controller action, scoped variable is passed as parameter. -->
+        <button ng-click="park(car)"
+            ng-disabled="plateForm.$invalid">
+            Park
+        </button>
+
+        <alert ng-show="plateForm.$invalid && !plateForm.$pristine"
+            topic="alertTopic">
+            <span ng-show="plateForm.plateField.$error.required">
+                You must inform the plate of the car.
+            </span>
+            <span ng-show="plateForm.plateField.$error.minlength">
+                The plate must have at least 6 characters.
+            </span>
+            <span ng-show="plateForm.plateField.$error.maxlength">
+                The plate must have at most 10 characters.
+            </span>
+            <span ng-show="plateForm.plateField.$error.pattern && !plateForm.plateField.$error.minlength">
+                At least three digits must follow at least three letters anywhere in the plate.
+            </span>
+        </alert>
+    </body>
+</html>
