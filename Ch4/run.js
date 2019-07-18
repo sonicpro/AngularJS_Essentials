@@ -7,6 +7,17 @@ app.run(function ($rootScope, $window) {
 });
 
 app.run(function ($httpBackend) {
-  $httpBackend.whenGET("/cars").respond([{plate: "AAA9999", color: "Blue", entrance: new Date()}, {plate: "AAA9988", color: "Blue", entrance: new Date()}]);
+  $httpBackend.whenGET("/cars").respond([
+    {
+      plate: "AAA9999",
+      color: "Blue",
+      entrance: new Date()
+    },
+    {
+      plate: "AAA9988",
+      color: "Blue",
+      entrance: new Date()
+    }
+  ]);
   $httpBackend.whenGET(/./).passThrough();
 });

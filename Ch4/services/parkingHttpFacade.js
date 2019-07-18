@@ -3,9 +3,9 @@
 app.factory("parkingHttpFacade", function ($http) {
     // "Revealing module" pattern.
     var _getCars = function () {
-        return $http.get("/cars/");
+        return $http.get("/cars"); // to use ngMockE2E fake responses, the path must match the one used in "whenGET" exactly.
     }
-
+    /* Everything below is not supported by the $httpBackend yet. See run.js.
     var _getCar = function (id) {
         return $http.get("/cars/" + id);
     }
@@ -21,12 +21,12 @@ app.factory("parkingHttpFacade", function ($http) {
     var _deleteCar = function (id) {
         $http.delete("/cars/" + id);
     }
-
+*/
     return {
         getCars: _getCars,
-        getCar: _getCar,
-        saveCar: _saveCar,
-        updateCar: _updateCar,
-        deleteCar: _deleteCar
+        // getCar: _getCar,
+        // saveCar: _saveCar,
+        // updateCar: _updateCar,
+        // deleteCar: _deleteCar
     };
 })
