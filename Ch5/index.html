@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <title>Parking</title>
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <script src="lib/angular.min.js"></script>
+        <script src="lib/angular-animate.min.js"></script>
+        <script src="lib/angular-route.min.js"></script>
+        <script src="lib/angular-mocks.js"></script>
+        <script src="app.js"></script>
+        <script src="services/parkingHttpFacade.js"></script>
+        <script src="controllers/parking.js"></script>
+        <script src="directives/alert.js"></script>
+        <script src="services/httpUnauthorizedInterceptor.js"></script>
+        <script src="config.js"></script>
+        <script src="run.js"></script>
+    </head>
+    <body>
+        <div ng-view></div>
+    </body>
+</html>
