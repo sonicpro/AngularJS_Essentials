@@ -1,9 +1,11 @@
 /*global app */
 
 app.run(function ($rootScope, $window) {
-  $rootScope.$on("$routeChangeError", function(event, current, previous, rejection) {
-    $window.location.href = "error.html";
-  });
+  // $rootScope.$on("$routeChangeError", function(event, current, previous, rejection) {
+  //   $window.location.href = "error.html";
+  // });
+
+  $rootScope.appTitle = "[Packt] Parking";
 });
 
 app.run(function ($httpBackend) {

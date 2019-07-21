@@ -8,7 +8,7 @@ function parkingCtrl($scope, cars) {
     //     delete $scope.car;
     // };
 
-    // Low coupling version.
+    // Low coupling version. Treat $scope as write-only inside the controller, i.e. pass the parameters directly from the view.
     $scope.parkCar = function (car) {
         alert("Car creation functionality hasn't added to $httpBackend yet...");
         // parkingHttpFacade.saveCar(car)
@@ -29,5 +29,19 @@ function parkingCtrl($scope, cars) {
         "Silver"
     ];
 
-    $scope.alertTopic = "Something went wrong!";
+    // Demonstraiting how the controller scope $watch works.
+    $scope.plateCounter = -1;
+    $scope.$watch("car.plate", function () {
+        $scope.plateCounter++;
+    });
+
+    // Subscribe to the $rootScope broadcast event.
+    $scope.$on("TICK", function (event, data) {
+        $scope.tick = data;
+    })
+
+    // Stop button click handler. Emits event upstream.
+    $scope.stopTicking = function () {
+        $scope.$emit("STOP_TICK");
+    }
 }
